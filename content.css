@@ -1,0 +1,254 @@
+/* Container for popup animations */
+.popup-container {
+  pointer-events: none;
+}
+
+/* Single popup with compact and expanded states */
+.map-popup {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  pointer-events: auto;
+}
+
+/* Animation states */
+.map-popup.popup-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.map-popup.popup-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.map-popup.compact {
+  border: 1px solid #e0e0e0;
+  width: 30px;
+  height: 30px;
+  border-radius: 0 12px 12px 12px;
+}
+
+.map-popup.expanded {
+  border: 1px solid #e0e0e000;
+  width: 400px;
+  height: 300px;
+  cursor: default;
+  border-radius: 0 12px 12px 12px;
+}
+
+.map-popup.expanded .map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.map-popup.expanded iframe {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.compact-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  transform: translateY(0);
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pin-icon {
+  position: relative;
+  will-change: transform;
+}
+
+
+
+.expanded-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  transform: scale(0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.map-popup.expanded .expanded-view {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.map-popup.expanded .compact-view {
+  transform: scale(0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.map-popup.map-hidden .expanded-view {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.map-popup:not(.map-hidden) .expanded-view {
+  transition: opacity 0.3s ease;
+}
+
+.map-popup.compact:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.popup-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-header {
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.popup-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.popup-close:hover {
+  background: #e9ecef;
+  color: #333;
+}
+
+.popup-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  will-change: transform;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+  will-change: transform;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #dc3545;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+}
+
+.no-api-key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+}
+
+.no-api-key a {
+  color: #4285f4;
+  text-decoration: none;
+  margin-top: 8px;
+}
+
+.no-api-key a:hover {
+  text-decoration: underline;
+}
+
+.map-actions {
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+}
+
+.open-google-btn {
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  background: #4285f4;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.open-google-btn:hover {
+  background: #3367d6;
+}

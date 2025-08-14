@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    :root {
+      --bg: #0a1628; /* deep night blue reminiscent of map dark mode */
+      --card: #0e233d; /* dark slate for panels */
+      --soft: #122a49; /* soft panel background */
+      --text: #e6edf3;
+      --muted: #9fb4c9; /* desaturated blue-gray */
+      --accent: #34a853; /* Google Maps green */
+      --accent-2: #4285f4; /* Google blue */
+      --ring: rgba(66,133,244,0.35);
+      --shadow: 0 10px 28px rgba(0,0,0,0.45);
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      background: var(--bg);
+    }
+
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 18px;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, 'Helvetica Neue', Arial, sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg)
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 60%), var(--card);
+      border: 1px solid rgba(66,133,244,0.18);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0 0 14px 0;
+      color: var(--text);
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h1::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: conic-gradient(from 0deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 18px rgba(66,133,244,0.6), 0 0 10px rgba(52,168,83,0.45);
+    }
+
+    .info {
+      background: linear-gradient(180deg, rgba(52,168,83,0.10), rgba(66,133,244,0.10));
+      padding: 12px 12px 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      border: 1px solid rgba(66,133,244,0.18);
+    }
+
+    .api-key-section {
+      margin-bottom: 16px;
+      padding: 0;
+      border-radius: var(--radius);
+      border: 1px solid rgba(66,133,244,0.18);
+      background: var(--soft);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .api-key-section::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(120px 60px at 20% 0%, rgba(66,133,244,0.12), transparent 60%),
+                  radial-gradient(120px 60px at 80% 0%, rgba(52,168,83,0.12), transparent 60%);
+    }
+
+    .api-key-section h2 {
+      font-size: 13px;
+      margin: 0;
+      padding: 10px 12px;
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 60%);
+      border-bottom: 1px solid rgba(66,133,244,0.18);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .api-key-section h2::before {
+      content: "🗺️";
+      font-size: 14px;
+      filter: drop-shadow(0 0 6px rgba(66,133,244,0.45));
+    }
+
+    .input-group {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      align-items: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 60%);
+    }
+
+    .input-group .btn { /* legacy selector retained */
+      padding: 10px 12px;
+      background: linear-gradient(135deg, var(--accent-2), #2b6bdc);
+      color: white;
+      border: 0;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .12s ease, filter .2s ease, box-shadow .2s ease;
+      box-shadow: 0 8px 20px rgba(66,133,244,0.28);
+    }
+
+    .input-group .btn:hover { filter: brightness(1.06); }
+    .input-group .btn:active { transform: translateY(1px) scale(0.99); }
+
+    /* Keep password-like dots without blur */
+    .input-group input#apiKey {
+      -webkit-text-security: disc;
+      caret-color: auto;
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid rgba(66,133,244,0.22);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text);
+      background: rgba(12,28,50,0.55);
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .input-group input::placeholder { color: #7fa1bd; }
+
+    .input-group input:focus {
+      border-color: var(--accent-2);
+      box-shadow: 0 0 0 3px var(--ring);
+      background: rgba(18,42,73,0.75);
+    }
+
+    .input-group button {
+      padding: 10px 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      border: 0;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .12s ease, filter .2s ease, box-shadow .2s ease;
+      box-shadow: 0 8px 22px rgba(52,168,83,0.28);
+      will-change: transform;
+    }
+
+    .input-group button:hover { filter: brightness(1.06); }
+    .input-group button:active { transform: translateY(1px) scale(0.99); }
+
+    .status {
+      font-size: 12px;
+      margin: 6px 12px 10px 12px;
+      min-height: 16px;
+      color: var(--muted);
+    }
+
+    .status.success { color: #6ee7b7; }
+    .status.error { color: #ff7b7b; }
+
+    .help-text {
+      font-size: 11px;
+      color: var(--muted);
+      padding: 0 12px 12px 12px;
+    }
+
+    .help-text a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    .help-text a:hover { text-decoration: underline; }
+
+    .feature-list, .usage {
+      margin-bottom: 14px;
+      background: var(--soft);
+      border: 1px solid rgba(66,133,244,0.18);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .feature-list::before, .usage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(140px 70px at 85% -10%, rgba(52,168,83,0.10), transparent 60%),
+                  radial-gradient(120px 60px at 10% -10%, rgba(66,133,244,0.10), transparent 60%);
+    }
+
+    .feature-list h2, .usage h2 {
+      font-size: 13px;
+      margin: 0;
+      padding: 10px 12px;
+      color: var(--text);
+      border-bottom: 1px solid rgba(66,133,244,0.18);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 60%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-list h2::before, .usage h2::before {
+      content: "🧭";
+      text-shadow: 0 0 10px rgba(52,168,83,0.6);
+      font-size: 12px;
+    }
+
+    .usage h2::before {
+      content: "💡";
+    }
+
+    .feature-list ul, .usage ol {
+      margin: 0;
+      padding: 10px 16px 12px 28px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .feature-list li, .usage li { margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Address Map Popup</h1>
+  
+  <div class="info">
+    Highlight any address or coordinates on web pages to see them on Google Maps!
+  </div>
+  
+  <div class="api-key-section">
+    <h2>Google Maps API Key:</h2>
+    <div class="input-group">
+      <input type="text" id="apiKey" placeholder="Enter your Google Maps API key" />
+      <button id="saveKey">Save</button>
+    </div>
+    <div class="status" id="status"></div>
+    <div class="help-text">
+      <a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank">Get your free API key here</a>
+    </div>
+  </div>
+  
+  <div class="feature-list">
+    <h2>Features:</h2>
+    <ul>
+      <li>Detects addresses ✨<i>automatically</i>✨</li>
+      <li>Works on any website</li>
+      <li>Uses Google Maps embed</li>
+      <li>Interactive maps with zoom and pan</li>
+    </ul>
+  </div>
+  
+  <div class="usage">
+    <h2>How to use:</h2>
+    <ol>
+      <li>Enter your Google Maps API key above</li>
+      <li>Navigate to any webpage</li>
+      <li>Highlight text with an address or coordinates</li>
+      <li>A map popup will appear automatically</li>
+    </ol>
+  </div>
+  
+  <script src="popup.js"></script>
+  
+</body>
+</html>
