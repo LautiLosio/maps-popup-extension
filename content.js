@@ -92,6 +92,11 @@ function detectAddressConfidence(text) {
       confidence -= 0.2;
     }
   }
+
+  // Test 8: Penalty for very short text
+  if (text.length < 10) {
+    confidence -= 0.3;
+  }
   
   // Ensure confidence is between 0 and 1
   return Math.max(0, Math.min(1, confidence));
