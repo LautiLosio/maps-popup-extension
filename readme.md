@@ -2,7 +2,7 @@
 
 Highlight an address or coordinates on any webpage to see a small pin next to your selection. Hover the pin to expand an embedded Google Map that searches for the selected text.
 
-![demo](demo.mp4)
+![demo](demo.gif)
 
 ## Features
 
