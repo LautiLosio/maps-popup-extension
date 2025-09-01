@@ -1,179 +1,74 @@
-## Technical Details
+## Address Map Popup (with Google Maps API)
 
-**Mapping Services Used:**
-- **OpenStreetMap**: For tile layers and map display (using direct tile API)
-- **Nominatim**: For geocoding addresses (free OSM service)
-- **No external libraries**: Uses native browser APIs and OSM tile system
+Highlight an address or coordinates on any webpage to see a small pin next to your selection. Hover the pin to expand an embedded Google Map that searches for the selected text.
 
-**How the Maps Work:**
-- Calculates OSM tile coordinates for the location
-- Loads a 3x3 grid of map tiles centered on the location
-- Displays# Address Map Popup Chrome Extension (OpenStreetMap)
-
-A Chrome extension that detects highlighted addresses and coordinates on web pages and shows them on an interactive OpenStreetMap popup. **No API keys required!**
+![demo](demo.mp4)
 
 ## Features
 
-- **Smart Detection**: Automatically detects various address formats and coordinate systems
-- **Instant Maps**: Shows location on OpenStreetMap in a popup next to highlighted text
-- **No API Keys**: Uses free OpenStreetMap and Nominatim services
-- **Multiple Formats Supported**:
-  - Street addresses (123 Main St, City, State ZIP)
-  - Decimal coordinates (40.7128, -74.0060)
-  - DMS coordinates (40°42'46"N 74°00'21"W)
-- **Clean UI**: Non-intrusive popup that appears only when needed
-- **Quick Actions**: Direct links to both OpenStreetMap and Google Maps
+- **Auto-detection**: Heuristic scoring identifies likely addresses and coordinates you highlight.
+- **Lightweight UI**: Compact pin expands on hover; closes on Esc or click outside.
+- **Works everywhere**: Runs on all sites without additional configuration.
 
-## Setup Instructions
+## Requirements
 
-### 1. No API Keys Needed! 🎉
+- **Google Maps Embed API key**: Stored locally using Chrome sync storage.
 
-Unlike Google Maps, OpenStreetMap is completely free and open. No registration or API keys required!
+## Install
 
-### 2. Install the Extension
+1. Download/clone the repository.
+2. Open Chrome → `chrome://extensions/`.
+3. Enable Developer Mode.
+4. Click “Load unpacked” and select this folder.
 
-1. Download/clone all the extension files
-2. Open Chrome and go to `chrome://extensions/`
-3. Enable "Developer mode" (toggle in top right)
-4. Click "Load unpacked" and select the extension folder
-5. The extension should now appear in your extensions list
+## Setup
 
-### 3. Start Using Immediately
+1. Click the extension icon to open `popup.html`.
+2. Paste your Google Maps API key and click Save.
 
-1. Navigate to any webpage
-2. Highlight text containing an address or coordinates
-3. A map popup will automatically appear showing the location
-4. Click "Open in OpenStreetMap" or "Open in Google Maps" for full view
+## Use
 
-## Supported Address Formats
+1. Select text that contains an address or coordinates.
+2. A small 📍 pin appears near the selection if the text looks like a location.
+3. Hover the pin to load an embedded Google Map search for the selected text.
 
-The extension recognizes a wide variety of address formats from around the world:
+## Supported inputs (examples)
 
-**Street Addresses:**
-- `123 Main Street, New York, NY 10001` (US format)
-- `789 Broadway, Seattle` (US format without ZIP)
-- `456 Oak Ave, Los Angeles, CA` (abbreviated street type)
+- Street addresses: `123 Main St, New York, NY 10001`
+- Decimal coordinates: `40.7128, -74.0060`
+- DMS coordinates: `40°42'46"N 74°00'21"W`
 
-**International Addresses:**
-- `Av J.M. de Pueyrredón 85, CP 5000` (Spanish/Argentine format)
-- `Via Roma 123, Milano` (Italian format)
-- `Rue de la Paix 45, Paris` (French format)
-- `Strasse Unter den Linden 77, Berlin` (German format)
-- `Rua Augusta 1000, São Paulo` (Portuguese/Brazilian format)
+## How it works
 
-**Various Street Formats:**
-- Number first: `123 Broadway`, `85 Main Street`
-- Street first: `Broadway 123`, `Pueyrredón 85` (European style)
-- With prefixes: `Av. 9 de Julio 1234`, `Pl. San Martín 56`
+- On mouseup, the selected text is scored by `detectAddressConfidence`. If it exceeds the threshold, a pin is shown.
+- On hover, an `<iframe>` is created with Google Maps Embed Search using the exact selected text.
+- The API key is read from `chrome.storage.sync`.
 
-**Postal Code Formats:**
-- `CP 5000` (Código Postal)
-- `ZIP 12345` (US ZIP code)
-- `Postal Code: 1000` (Generic format)
-- `PLZ 10115` (German Postleitzahl)
+## Permissions
 
-**City/Region Combinations:**
-- `Buenos Aires, Argentina`
-- `Paris, France`
-- `Tokyo, Japan`
-- `Seattle, WA`
+- `activeTab`: Read the highlighted selection to decide whether to show the pin.
+- `storage`: Save and load the Google Maps API key.
 
-**Coordinates:**
-- `40.7128, -74.0060` (decimal degrees)
-- `40.7128,-74.0060` (no spaces)
-- `40°42'46"N 74°00'21"W` (degrees, minutes, seconds)
-
-## Technical Details
-
-**Mapping Services Used:**
-- **OpenStreetMap**: For tile layers and map display (using direct tile API)
-- **Nominatim**: For geocoding addresses (free OSM service)
-- **No external libraries**: Uses native browser APIs and OSM tile system
-
-**How the Maps Work:**
-- Calculates OSM tile coordinates for the location
-- Loads a 3x3 grid of map tiles centered on the location
-- Displays a clickable map preview with accurate positioning
-- No CSP issues since it only uses image tiles and native HTML/CSS
-
-## File Structure
+## Files
 
 ```
-extension/
-├── manifest.json          # Extension configuration
-├── content.js            # Main content script with OSM integration
-├── content.css           # Popup styling
-├── popup.html            # Info popup (no settings needed!)
-├── popup.js              # Simple popup script
-├── background.js         # Optional service worker
-└── README.md             # This file
+manifest.json     # MV3 configuration
+content.js        # Detect selection, show pin, embed map on hover
+content.css       # Popup styling (compact/expanded states)
+popup.html        # API key input UI
+popup.js          # Save/load API key via chrome.storage.sync
+background.js     # Optional helper (not required for basic use)
+README.md         # This file
 ```
-
-## Permissions Explained
-
-- `activeTab`: Access current tab content to detect text selection
-- No storage permission needed (no API keys to store!)
-
-## Advantages of OpenStreetMap
-
-✅ **Free**: No costs, quotas, or billing  
-✅ **Open**: Community-driven, transparent data  
-✅ **Privacy**: No tracking or data collection  
-✅ **Global**: Worldwide coverage with local contributions  
-✅ **No Setup**: Works immediately after installation  
-
-## Detection Features
-
-**Smart Pattern Matching:**
-- Supports Unicode characters for international street names
-- Handles various street type abbreviations and translations
-- Recognizes both "number street" and "street number" formats
-- Scores potential matches to choose the best address candidate
-
-**International Support:**
-- Works with addresses in Spanish, French, German, Italian, Portuguese, and more
-- Recognizes international postal code formats (CP, PLZ, CAP, etc.)
-- Handles accented characters and special symbols in street names
-- Supports various addressing conventions worldwide
-
-## Troubleshooting
-
-**Maps not loading:**
-- Check internet connection
-- Ensure cdnjs.cloudflare.com is accessible
-- Check browser console for error messages
-
-**Address not detected:**
-- Try selecting more complete address text
-- Ensure the address format matches supported patterns
-- Check that text selection is clean (no extra characters)
-
-**Popup not appearing:**
-- Refresh the page after installing the extension
-- Check that the extension is enabled in chrome://extensions/
-- Try with a known good address format
-
-## Customization
-
-You can modify the detection patterns in `content.js`:
-- Add new address patterns to `ADDRESS_PATTERNS` array
-- Add coordinate formats to `COORDINATE_PATTERNS` array
-- Adjust popup styling in `content.css`
-- Change map providers in the CONFIG object
 
 ## Privacy
 
-This extension:
-- Only processes text you actively highlight
-- Makes requests only to OpenStreetMap services
-- Does not collect, store, or transmit personal data
-- Uses community-maintained, open-source mapping data
-- No tracking or analytics
+- Only the text you highlight is used.
+- The highlighted text is sent to Google Maps via the embedded map URL.
+- The API key is stored locally in Chrome sync storage.
 
-## Contributing to OpenStreetMap
+## Troubleshooting
 
-If you find missing or incorrect location data:
-1. Visit [OpenStreetMap.org](https://www.openstreetmap.org)
-2. Create a free account
-3. Use the built-in editor to improve the map
-4. Your changes will be available worldwide!
+- **No map appears**: Ensure you saved a valid Google Maps Embed API key.
+- **Pin doesn’t show**: The text may not score as an address; try a more complete format.
+- **Close the popup**: Press Esc or click anywhere outside the popup.
