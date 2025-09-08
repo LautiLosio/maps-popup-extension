@@ -16,6 +16,10 @@ Highlight an address or coordinates on any webpage to see a small pin next to yo
 
 ## Install
 
+### Chrome Web Store
+- [Address Map Popup](https://chromewebstore.google.com/detail/najgeofjcnmndnbkjcppmklgeahpfmad?utm_source=item-share-cb)
+
+### Local
 1. Download/clone the repository.
 2. Open Chrome → `chrome://extensions/`.
 3. Enable Developer Mode.
